@@ -1,10 +1,30 @@
 package ru.labs.queue;
 
 public abstract class Queue<T> {
-
+    private T head;
+    private T back;
     private T next;
 
-    public boolean add(T newElement){
+    public void enqueue(T newObject){
+        if (next != null) {
+            enqueue(newObject);
+            back = newObject;
+        }
+        else {
+            next = newObject;
+            back = newObject;
+        }
+    }
+
+    public T dequeue(){
+
+    }
+
+    private Boolean isEmpty(){
+
+    }
+
+    /*public boolean add(T newElement){
 
         return true;
     }
@@ -16,6 +36,6 @@ public abstract class Queue<T> {
     //next model time
     public void goNext(){
 
-    }
+    }*/
 
 }
