@@ -1,9 +1,11 @@
 package ru.labs.queue;
 
-public abstract class Queue<List, T> {
-    protected List head;
-    protected List tail;
-    private int size = 0;
+import java.util.LinkedList;
+
+public abstract class Queue<T> {
+    protected ObjectList<T> head;
+    protected ObjectList<T> tail;
+    private int size;
 
     public abstract void enqueue(T newObject);
     public abstract T dequeue();
@@ -20,6 +22,7 @@ public abstract class Queue<List, T> {
         size++;
     }
     public void decreaseSize(){
-        size++;
+        size--;
     }
+    public abstract LinkedList<T> getAllObjectsInQueue();
 }

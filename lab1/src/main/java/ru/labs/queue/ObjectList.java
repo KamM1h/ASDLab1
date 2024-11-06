@@ -1,5 +1,7 @@
 package ru.labs.queue;
 
+import java.util.LinkedList;
+
 public class ObjectList<T>{
     private T object;
     private ObjectList<T> next;

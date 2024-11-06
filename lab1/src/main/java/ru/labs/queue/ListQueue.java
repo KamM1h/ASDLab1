@@ -1,6 +1,8 @@
 package ru.labs.queue;
 
-public class ListQueue<T> extends Queue<ObjectList<T>, T>{
+import java.util.LinkedList;
+
+public class ListQueue<T> extends Queue<T>{
 
     @Override
     public void enqueue(T newObject) {
@@ -31,12 +33,38 @@ public class ListQueue<T> extends Queue<ObjectList<T>, T>{
         }
     }
 
+//    @Override
+//    public T front() {
+//        if(isEmpty()) {
+//            return head.getObject();
+//        }else {
+//            return null;
+//        }
+//    }
+
     @Override
     public T front() {
         if(isEmpty()) {
-            return head.getObject();
-        }else {
             return null;
+        }else {
+            return head.getObject();
+        }
+    }
+
+    @Override
+    public LinkedList<T> getAllObjectsInQueue(){
+        return getAll(head);
+    }
+
+    public LinkedList<T> getAll(ObjectList<T> el){
+        if(el.getNext() != null){
+            LinkedList<T> list = new LinkedList<>(getAll(el.getNext()));
+            return list;
+        }
+        else{
+            LinkedList<T> list = new LinkedList<>();
+            list.add(el.getObject());
+            return list;
         }
     }
 }

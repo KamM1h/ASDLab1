@@ -2,7 +2,7 @@ package ru.labs.queue;
 
 import java.util.LinkedList;
 
-public class RoundQueue<T> extends Queue<ObjectList<T>, T>{
+public class RoundQueue<T> extends Queue<T>{
 
     @Override
     public void enqueue(T newObject) {
@@ -49,16 +49,51 @@ public class RoundQueue<T> extends Queue<ObjectList<T>, T>{
         }
     }
 
-    @Override
-    public T front() {
-        if(isEmpty()) {
-            return head.getObject();
-        }else {
-            return null;
-        }
+//    @Override
+//    public T front() {
+//        if(isEmpty()) {
+//            return head.getObject();
+//        }else {
+//            return null;
+//        }
+//    }
+@Override
+public T front() {
+    if(isEmpty()) {
+        return null;
+    }else {
+        return head.getObject();
     }
+}
+
 
     private Boolean isFull(){
         return tail == head;
+    }
+
+    @Override
+    public LinkedList<T> getAllObjectsInQueue(){
+        if(isEmpty()){
+            System.out.println("Очередь пуста!!!\n");
+            return null;
+        }
+        if(isFull()){
+            LinkedList<T> list = new LinkedList<>(getAll(head.getNext()));
+            return list;
+        }
+        else return getAll(head);
+
+    }
+
+    private LinkedList<T> getAll(ObjectList<T> el){
+        if(el.getNext().getObject() != null && el!=tail){
+            LinkedList<T> list = new LinkedList<>(getAll(el.getNext()));
+            list.add(el.getObject());
+            return list;
+        } else{
+            LinkedList<T> list = new LinkedList<>();
+            list.add(el.getObject());
+            return list;
+        }
     }
 }
