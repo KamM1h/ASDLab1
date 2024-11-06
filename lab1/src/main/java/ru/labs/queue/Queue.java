@@ -1,41 +1,25 @@
 package ru.labs.queue;
 
-public abstract class Queue<T> {
-    private T head;
-    private T back;
-    private T next;
+public abstract class Queue<List, T> {
+    protected List head;
+    protected List tail;
+    private int size = 0;
 
-    public void enqueue(T newObject){
-        if (next != null) {
-            enqueue(newObject);
-            back = newObject;
-        }
-        else {
-            next = newObject;
-            back = newObject;
-        }
+    public abstract void enqueue(T newObject);
+    public abstract T dequeue();
+
+    public int getSize(){
+        return size;
     }
 
-    public T dequeue(){
-
+    public Boolean isEmpty(){
+        return head == null;
     }
-
-    private Boolean isEmpty(){
-
+    public abstract T front();
+    public void increaseSize(){
+        size++;
     }
-
-    /*public boolean add(T newElement){
-
-        return true;
+    public void decreaseSize(){
+        size++;
     }
-    public T delete(int id){
-        return null;
-    }
-
-
-    //next model time
-    public void goNext(){
-
-    }*/
-
 }
