@@ -3,97 +3,71 @@ package ru.labs.queue;
 import java.util.LinkedList;
 
 public class RoundQueue<T> extends Queue<T>{
+    private int front, rear;
+    private T[] array;
+
+    public RoundQueue(){
+        array = (T[]) new Object[6];
+        front = 0;
+        rear = 0;
+    }
 
     @Override
-    public void enqueue(T newObject) {
-        if (isEmpty()){
-            head = new ObjectList<T>(newObject, new ObjectList<T>(null, null));
-            tail = head.getNext();
+    public Boolean isEmpty() {
+        return rear == front;
+    }
+    private Boolean isFull(){
+        return (rear + 1) % 6 == front;
+    }
+
+    @Override
+    public Boolean enqueue(T newObject) {
+        if(isFull()){
+            return false;
+        }else{
+            array[rear] = newObject;
+            rear = (rear == 5) ? 0 : rear + 1;
             increaseSize();
-        }else if (getSize()<5){
-            increaseSize();
-            tail.setObject(newObject);
-            if(getSize() == 5){
-                tail.setNext(head);
-                tail = head;
-            }else{
-                tail.setNext(new ObjectList<T>(null, null));
-                tail = tail.getNext();
-            }
-        }
-        else{
-            System.out.println("Невозможно добавить в очередь");
+            return true;
         }
     }
 
     @Override
     public T dequeue() {
         if (isEmpty()){
-            System.out.println("Список пуст");
             return null;
-        }
-        else if(isFull()){
-            T object = head.getObject();
-            head.setObject(null);
-            head = head.getNext();
-            tail.setNext(null);
+        }else {
+            int x = front;
+            T object = array[x];
+            front = (front == 5) ? 0 : front + 1;
+            array[x] = null;
             decreaseSize();
             return object;
         }
-        else{
-            T object = head.getObject();
-            head.setObject(null);
-            head = head.getNext();
-            decreaseSize();
-            return object;
-        }
-    }
-
-//    @Override
-//    public T front() {
-//        if(isEmpty()) {
-//            return head.getObject();
-//        }else {
-//            return null;
-//        }
-//    }
-@Override
-public T front() {
-    if(isEmpty()) {
-        return null;
-    }else {
-        return head.getObject();
-    }
-}
-
-
-    private Boolean isFull(){
-        return tail == head;
     }
 
     @Override
-    public LinkedList<T> getAllObjectsInQueue(){
-        if(isEmpty()){
-            System.out.println("Очередь пуста!!!\n");
+    public T front() {
+        if(isEmpty()) {
             return null;
+        }else {
+            return array[front];
         }
-        if(isFull()){
-            LinkedList<T> list = new LinkedList<>(getAll(head.getNext()));
-            return list;
-        }
-        else return getAll(head);
-
     }
 
-    private LinkedList<T> getAll(ObjectList<T> el){
-        if(el.getNext().getObject() != null && el!=tail){
-            LinkedList<T> list = new LinkedList<>(getAll(el.getNext()));
-            list.add(el.getObject());
-            return list;
-        } else{
-            LinkedList<T> list = new LinkedList<>();
-            list.add(el.getObject());
+    @Override
+    public LinkedList<T> getAllObjectsInQueue(LinkedList<T> list){
+        if(isEmpty()) return null;
+        else {
+            for (int i = 0; i<getSize(); i++){
+                if(front + i > 5){
+                    list.add(array[front + i - 6]);
+                } else {
+                    list.add(array[front + i]);
+                }
+            }
             return list;
         }
+
     }
 }

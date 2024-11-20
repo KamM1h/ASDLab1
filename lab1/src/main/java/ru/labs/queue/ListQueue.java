@@ -4,24 +4,36 @@ import java.util.LinkedList;
 
 public class ListQueue<T> extends Queue<T>{
 
+    protected ObjectList<T> head;
+    protected ObjectList<T> tail;
+
     @Override
-    public void enqueue(T newObject) {
-        if (isEmpty()){
-            head = new ObjectList<T>(newObject, new ObjectList<T>(null, null));
-            tail = head.getNext();
-            increaseSize();
-        }else{
-            increaseSize();
-            tail.setObject(newObject);
-            tail.setNext(new ObjectList<T>(null, null));
-            tail = tail.getNext();
+    public Boolean isEmpty() {
+        return head == tail;
+    }
+
+    @Override
+    public Boolean enqueue(T newObject) {
+        try {
+            if (isEmpty()) {
+                head = new ObjectList<T>(newObject, new ObjectList<T>(null, null));
+                tail = head.getNext();
+                increaseSize();
+            } else {
+                increaseSize();
+                tail.setObject(newObject);
+                tail.setNext(new ObjectList<T>(null, null));
+                tail = tail.getNext();
+            }
+            return true;
+        }catch (Exception e){
+            return false;
         }
     }
 
     @Override
     public T dequeue() {
         if (isEmpty()){
-            System.out.println("Список пуст");
             return null;
         }
         else{
@@ -33,15 +45,6 @@ public class ListQueue<T> extends Queue<T>{
         }
     }
 
-//    @Override
-//    public T front() {
-//        if(isEmpty()) {
-//            return head.getObject();
-//        }else {
-//            return null;
-//        }
-//    }
-
     @Override
     public T front() {
         if(isEmpty()) {
@@ -52,17 +55,16 @@ public class ListQueue<T> extends Queue<T>{
     }
 
     @Override
-    public LinkedList<T> getAllObjectsInQueue(){
-        return getAll(head);
+    public LinkedList<T> getAllObjectsInQueue(LinkedList<T> list){
+        return getAll(head, list);
     }
 
-    public LinkedList<T> getAll(ObjectList<T> el){
-        if(el.getNext() != null){
-            LinkedList<T> list = new LinkedList<>(getAll(el.getNext()));
-            return list;
+    public LinkedList<T> getAll(ObjectList<T> el, LinkedList<T> list){
+        if(el.getNext() != tail){
+            list.add(el.getObject());
+            return getAll(el.getNext(), list);
         }
         else{
-            LinkedList<T> list = new LinkedList<>();
             list.add(el.getObject());
             return list;
         }

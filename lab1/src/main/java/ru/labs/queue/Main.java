@@ -8,52 +8,59 @@ public class Main {
         Scanner keyboard = new Scanner(System.in);
         int globalTime = 0;
         RoundQueue<ElType> queue = new RoundQueue<>();
+        //ListQueue<ElType> queue = new ListQueue<>();
 
         do {
-            System.out.println("Выберите действие: ");
-            System.out.println("1. Поставить новую деталь на обработку");
-            System.out.println("2. Переход к следующему моменту модельного времени");
-            System.out.println("3. Снять деталь с обработки до ее завершения");
-            System.out.println("4. Показать содержимое очереди");
-            System.out.println("5. Переключить модуль");
-            System.out.println("0. Выход");
+            try {
+                System.out.println("Глобальное время: " + globalTime);
+                System.out.println("Выберите действие: ");
+                System.out.println("1. Поставить новую деталь на обработку");
+                System.out.println("2. Переход к следующему моменту модельного времени");
+                System.out.println("3. Снять деталь с обработки до ее завершения");
+                System.out.println("4. Показать содержимое очереди");
+                System.out.println("0. Выход");
 
-            switch (keyboard.nextInt()) {
-                case 1:
-                    System.out.println("Введите код детали:");
-                    keyboard.nextLine();
-                    String id = keyboard.nextLine();
-                    System.out.println("Введите время обработки детали:");
-                    int time = keyboard.nextInt();
-                    System.out.println("Вы ввели: " + id + " " + time);
-                    queue.enqueue(new ElType(id, time));
-                    break;
-                case 2:
-                    System.out.println("Переход к следующему модельному времени");
-                    globalTime++;
-                    if(queue.front().getTimeForProcessing() == globalTime) {
-                        queue.dequeue();
-                        globalTime = 0;
+                switch (keyboard.nextInt()) {
+                    case 1 -> {
+                        System.out.println("Введите код детали:");
+                        keyboard.nextLine();
+                        String id = keyboard.nextLine();
+                        System.out.println("Введите время обработки детали:");
+                        int time = keyboard.nextInt();
+                        if(queue.enqueue(new ElType(id, time))){
+                            System.out.println("Вы добавили: " + id + " " + time);
+                        }else System.out.println("Не получилось добавить элемент");
                     }
-                    break;
-                case 3:
-                    System.out.println("Деталь " + queue.dequeue().getDetailCode() + " снята с обработки");
-                    break;
-                case 4:
-                    System.out.println("Содержимое очереди: ");
-                    LinkedList<ElType> list = queue.getAllObjectsInQueue();
-                    for(int i = 0; i < queue.getSize(); i++) {
-                        ElType element = list.get(i);
-                        System.out.println(i + ". " + element.getDetailCode() + " " + element.getTimeForProcessing());
+                    case 2 -> {
+                        System.out.println("Переход к следующему модельному времени");
+                        globalTime++;
+                        if (queue.front().getTimeForProcessing() == globalTime) {
+                            queue.dequeue();
+                            globalTime = 0;
+                        }
                     }
-                    break;
-                case 5:
-                    System.out.println("Модуль переключен");
-
-                    //реализация
-                default:
-                    keyboard.close();
-                    return;
+                    case 3 -> {
+                        String detailCode = queue.dequeue().getDetailCode();
+                        System.out.println("Деталь " +
+                                (detailCode != null ? detailCode: "список пуст")  + " снята с обработки");
+                    }
+                    case 4 -> {
+                        System.out.println("Содержимое очереди: ");
+                        LinkedList<ElType> list = new LinkedList<>();
+                        if(queue.getAllObjectsInQueue(list)!= null) {
+                            for (int i = 0; i < queue.getSize(); i++) {
+                                ElType element = list.get(i);
+                                System.out.println(i + ". " + element.getDetailCode() + " " + element.getTimeForProcessing());
+                            }
+                        } else System.out.println("Список пуст");
+                    }
+                    default -> {
+                        keyboard.close();
+                        return;
+                    }
+                }
+            } catch (Exception e){
+                System.out.println("Error");
             }
         } while (true);
 
