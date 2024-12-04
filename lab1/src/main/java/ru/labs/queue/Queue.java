@@ -1,21 +1,25 @@
 package ru.labs.queue;
 
+import java.util.LinkedList;
+
 public abstract class Queue<T> {
+    private int size;
 
-    private T next;
+    public abstract Boolean enqueue(T newObject);
+    public abstract T dequeue();
 
-    public boolean add(T newElement){
-
-        return true;
-    }
-    public T delete(int id){
-        return null;
+    public int getSize(){
+        return size;
     }
 
-
-    //next model time
-    public void goNext(){
-
+    public abstract Boolean isEmpty();
+    public abstract Boolean isFull();
+    public abstract T front();
+    public void increaseSize(){
+        size++;
     }
-
+    public void decreaseSize(){
+        size--;
+    }
+    public abstract LinkedList<T> getAllObjectsInQueue(LinkedList<T> list);
 }
