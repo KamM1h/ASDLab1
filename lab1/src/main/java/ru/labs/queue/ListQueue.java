@@ -13,6 +13,8 @@ public class ListQueue<T> extends Queue<T>{
     }
 
     @Override
+    public Boolean isFull(){return false;}
+    @Override
     public Boolean enqueue(T newObject) {
         try {
             if (isEmpty()) {

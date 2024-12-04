@@ -16,7 +16,8 @@ public class RoundQueue<T> extends Queue<T>{
     public Boolean isEmpty() {
         return rear == front;
     }
-    private Boolean isFull(){
+    @Override
+    public Boolean isFull(){
         return (rear + 1) % 6 == front;
     }
 

@@ -13,6 +13,7 @@ public abstract class Queue<T> {
     }
 
     public abstract Boolean isEmpty();
+    public abstract Boolean isFull();
     public abstract T front();
     public void increaseSize(){
         size++;
